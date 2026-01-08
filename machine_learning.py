@@ -460,10 +460,14 @@ def ml_model():
                 method_key = "HDBSCAN"
 
             elif method == "Spectral":
-                labels = SpectralClustering(
-                    n_clusters=n_clusters,
-                    random_state=42
-                ).fit_predict(X_scaled)
+                with st.spinner(f"⏳ Menjalankan Spectral Clustering (metode ini agak lambat)..."):
+                    labels = SpectralClustering(
+                        n_clusters=n_clusters,
+                        affinity="nearest_neighbors",  # Lebih cepat dari 'rbf'
+                        n_neighbors=10,  # Kurangi tetangga yang dipertimbangkan
+                        random_state=42,
+                        n_init=10
+                    ).fit_predict(X_scaled)
 
             elif method == "Birch":
                 model = Birch(n_clusters=n_clusters)
